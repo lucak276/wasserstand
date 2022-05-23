@@ -1,10 +1,10 @@
-package com.example.springfoxuebung;
+package de.dhbw.tim21.helloworld;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class SpringfoxuebungApplicationTests {
+class HelloWorldApplicationTests {
 
     @Test
     void contextLoads() {
