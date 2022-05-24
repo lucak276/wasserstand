@@ -1,16 +1,12 @@
 package de.dhbw.tim21.helloworld.controller;
 
-import de.dhbw.tim21.helloworld.model.Messtelle;
-import de.dhbw.tim21.helloworld.model.MesstelleList;
-//import de.dhbw.tim21.helloworld.model.Pegel;
-import de.dhbw.tim21.helloworld.model.PegelList;
+import de.dhbw.tim21.helloworld.model.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
-
-
+import java.util.List;
 
 
 @RestController
@@ -18,7 +14,7 @@ public class HelloWordController {
 
 
 
-
+    //returns if Station exists (don't know if this is needed) {shortname} takes String of Location
     @RequestMapping(value="/wasserstaende/station/{shortname}", method = RequestMethod.GET)
     public ResponseEntity<Messtelle> checkStation(@PathVariable(required = true) String shortname) {
         String url = String.format("https://www.pegelonline.wsv.de/webservices/rest-api/v2/stations/%s", shortname);
@@ -26,7 +22,7 @@ public class HelloWordController {
             RestTemplate restTemplate = new RestTemplate();
             Messtelle messstelle = restTemplate.getForObject(url, Messtelle.class);
             if (messstelle != null) {
-                return new ResponseEntity<Messtelle>(messstelle, HttpStatus.OK);
+                return new ResponseEntity<>(HttpStatus.OK);
             }
             else{
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -36,27 +32,30 @@ public class HelloWordController {
         }
     }
 
+
+    //gets every Station available (for example for a dropdown menu)
     @RequestMapping(value = "wasserstaende/stations", method = RequestMethod.GET)
-    public ResponseEntity<MesstelleList> getAllStations(){
+    public ResponseEntity<Messtelle[]> getAllStations(){
         String url = "https://www.pegelonline.wsv.de/webservices/rest-api/v2/stations";
         try {
             RestTemplate restTemplate = new RestTemplate();
-            MesstelleList messtelle = restTemplate.getForObject(url, MesstelleList.class);
-            return new ResponseEntity<>(messtelle, HttpStatus.OK);
+            Messtelle[] messtellen = restTemplate.getForObject(url, Messtelle[].class);
+
+            return new ResponseEntity<>(messtellen, HttpStatus.OK);
         }
         catch (Exception exception){
+            exception.printStackTrace();
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
 
-    // request for specifeic waters
-    // TODO: hqere we need to add an option to request a specific time period and different location options
+    // gets only current pegel from specif location   {shortname} takes String of Location
     @RequestMapping(value="/wasserstaende/station/value/{shortname}", method = RequestMethod.GET)
-    public ResponseEntity<PegelList> getPegel(@PathVariable(required = true) String shortname) {
-        String url = String.format("https://www.pegelonline.wsv.de/webservices/rest-api/v2/stations/%s/W/measurements.json", shortname);
+    public ResponseEntity<CurrentPegel> getCurrentPegel(@PathVariable(required = true) String shortname) {
+        String url = String.format("https://www.pegelonline.wsv.de/webservices/rest-api/v2/stations/%s/W/currentmeasurement.json", shortname);
         try {
             RestTemplate restTemplate = new RestTemplate();
-            PegelList pegel = restTemplate.getForObject(url, PegelList.class);
+            CurrentPegel pegel = restTemplate.getForObject(url, CurrentPegel.class);
             if (pegel != null) {
                 return new ResponseEntity<>(pegel, HttpStatus.OK);
             }
@@ -68,14 +67,14 @@ public class HelloWordController {
         }
     }
 
-    ///gets Pegel from Station from the last X days - Input consists of "name/Timeframe"    - Timeframe example: P10D for the last 10 Days
-    @RequestMapping(value="/wasserstaende/station/value/{input}", method = RequestMethod.GET)
-    public ResponseEntity<PegelList> getPegelWithTime(@PathVariable(required = true) String input) {
-        String[] splitInput = input.split("/");
+    ///gets Pegel from Station from the last X days - Input consists of "name/Timeframe"   name takes String of Location / Timeframe example: P10D for the last 10 Days
+    @RequestMapping(value="/wasserstaende/station/values/{input}", method = RequestMethod.GET)
+    public ResponseEntity<Pegel[]> getPegelWithTime(@PathVariable(required = true) String input) {
+        String[] splitInput = input.split("-");
         String url = String.format("https://www.pegelonline.wsv.de/webservices/rest-api/v2/stations/%s/W/measurements.json?start=%s", splitInput[0], splitInput[1]);
         try {
             RestTemplate restTemplate = new RestTemplate();
-            PegelList pegel = restTemplate.getForObject(url, PegelList.class);
+            Pegel[] pegel = restTemplate.getForObject(url, Pegel[].class);
             if (pegel != null) {
                 return new ResponseEntity<>(pegel, HttpStatus.OK);
             }

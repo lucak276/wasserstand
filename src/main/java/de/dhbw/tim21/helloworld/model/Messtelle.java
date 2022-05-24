@@ -1,48 +1,43 @@
 package de.dhbw.tim21.helloworld.model;
 
-import javax.persistence.*;
 
-@Entity
-@Table(name = "messstellen")
+
 public class Messtelle {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
 
-    @Column(name = "uuid")
+
     public String uuid = null;
 
-    @Column(name = "number")
-    public long number = 0;
 
-    @Column(name = "shortname")
+    public String number = null;
+
+
     public String shortname = null;
 
-    @Column(name = "longname")
+
+
     public String longname = null;
 
-    @Column(name = "km")
+
     public long km = 0;
 
-    @Column(name = "agency")
+
     public String agency = null;
 
-    @Column(name = "longitude")
+
     public long longitude = 0;
 
-    @Column(name = "latitude")
+
     public long latitude = 0;
 
     // has to be an Object with shortname and longname keys
-    @Column(name = "water")
-    @ManyToOne
+
     public Water water = null;
 
 
 
 
-    public Messtelle(String uuid, long number, String shortname, String longname, long km, String agency, long longitude, long latitude, Water water) {
+    public Messtelle(String uuid, String number, String shortname, String longname, long km, String agency, long longitude, long latitude, Water water) {
         this.uuid = uuid;
         this.number = number;
         this.shortname = shortname;
@@ -60,16 +55,9 @@ public class Messtelle {
 
     public String toString() {
 
-        return "Student[gewässer:" + this.shortname + ",longname:" + this.longname + ",km:" + this.km + "]";
+        return "Student[gewaesser:" + this.shortname + ",longname:" + this.longname + ",km:" + this.km + "]";
     }
 
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
 
     public String getShortname() {
         return shortname;
@@ -79,6 +67,68 @@ public class Messtelle {
         this.shortname = shortname;
     }
 
+    public String getUuid() {
+        return uuid;
+    }
 
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
+    }
+
+    public String getNumber() {
+        return number;
+    }
+
+    public void setNumber(String number) {
+        this.number = number;
+    }
+
+    public String getLongname() {
+        return longname;
+    }
+
+    public void setLongname(String longname) {
+        this.longname = longname;
+    }
+
+    public long getKm() {
+        return km;
+    }
+
+    public void setKm(long km) {
+        this.km = km;
+    }
+
+    public String getAgency() {
+        return agency;
+    }
+
+    public void setAgency(String agency) {
+        this.agency = agency;
+    }
+
+    public long getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(long longitude) {
+        this.longitude = longitude;
+    }
+
+    public long getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(long latitude) {
+        this.latitude = latitude;
+    }
+
+    public Water getWater() {
+        return water;
+    }
+
+    public void setWater(Water water) {
+        this.water = water;
+    }
 
 }

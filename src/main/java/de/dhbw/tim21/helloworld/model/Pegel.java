@@ -1,22 +1,32 @@
 package de.dhbw.tim21.helloworld.model;
 
-import javax.persistence.*;
 
-@Entity
-@Table(name = "pegelstaende")
+
 public class Pegel {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
 
-    @Column(name = "time")
-    private String time;
 
-    @Column(name = "value")
+    private String timestamp = null;
+
+
     private long value;
 
-    public Pegel(String time, long value) {
-        this.time = time;
+    public String getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(String timestamp) {
+        this.timestamp = timestamp;
+    }
+
+    public long getValue() {
+        return value;
+    }
+
+    public void setValue(long value) {
+        this.value = value;
+    }
+    public Pegel(String timestamp, long value) {
+        this.timestamp = timestamp;
         this.value = value;
     }
 
