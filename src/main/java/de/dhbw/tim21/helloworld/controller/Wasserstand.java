@@ -12,7 +12,7 @@ public class Wasserstand {
 
 
 
-    //returns if Station exists (don't know if this is needed) {shortname} takes String of Location
+    //returns station parameters if Station exists   {shortname} takes String of Location
     @RequestMapping(value="/wasserstaende/station/{shortname}", method = RequestMethod.GET)
     @CrossOrigin(origins = "http://localhost:3000")
     public ResponseEntity<Messtelle> checkStation(@PathVariable(required = true) String shortname) {
@@ -27,7 +27,7 @@ public class Wasserstand {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
         } catch (Exception exception) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -67,7 +67,7 @@ public class Wasserstand {
     }
 
     // gets only current pegel from specif location   {shortname} takes String of Location
-    @RequestMapping(value="/wasserstaende/station/value/{shortname}", method = RequestMethod.GET)
+    @RequestMapping(value="/wasserstaende/station/currentvalue/{shortname}", method = RequestMethod.GET)
     @CrossOrigin(origins = "http://localhost:3000")
     public ResponseEntity<Long> getCurrentPegel(@PathVariable(required = true) String shortname) {
         String url = String.format("https://www.pegelonline.wsv.de/webservices/rest-api/v2/stations/%s/W/currentmeasurement.json", shortname);
@@ -82,7 +82,7 @@ public class Wasserstand {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
         } catch (Exception exception) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -102,7 +102,7 @@ public class Wasserstand {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
         } catch (Exception exception) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
 }
