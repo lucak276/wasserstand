@@ -11,7 +11,15 @@ sourceCompatibility = '11'
 repositories {
     mavenCentral()
 }
+jar {
+    manifest {
+        attributes "Main-Class": "de.dhbw.tim21.helloworld"
+    }
 
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+}
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation "io.springfox:springfox-boot-starter:3.0.0"
